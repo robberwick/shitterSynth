@@ -5,8 +5,9 @@
 #ifndef SYNTH_VOICE_H
 #define SYNTH_VOICE_H
 
-#include "juce_audio_basics/juce_audio_basics.h"
 #include "SynthSound.h"
+#include "juce_audio_basics/juce_audio_basics.h"
+#include "juce_dsp/juce_dsp.h"
 
 class SynthVoice: public juce::SynthesiserVoice {
 public:
@@ -15,9 +16,16 @@ public:
     void stopNote (float velocity, bool allowTailOff) override;
     void pitchWheelMoved (int newPitchWheelValue) override;
     void controllerMoved (int controllerNumber, int newControllerValue) override;
+    void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
     void renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
 private:
+    juce::ADSR adsr;
+    juce::ADSR::Parameters adsrParams;
+    juce::dsp::Oscillator<float> osc { [] (const float x) { return std::sin (x); } };
+    juce::dsp::Gain<float> gain;
+
+    bool isPrepared { false };
 
 };
 

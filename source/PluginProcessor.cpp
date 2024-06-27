@@ -94,6 +94,11 @@ void PluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     // initialisation that you need..
     juce::ignoreUnused (sampleRate, samplesPerBlock);
     synth.setCurrentPlaybackSampleRate (sampleRate);
+    for (int i = 0; i < synth.getNumVoices(); i++) {
+        if (const auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
+            voice->prepareToPlay (sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+    }
 }
 
 void PluginProcessor::releaseResources()
