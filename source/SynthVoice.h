@@ -22,6 +22,9 @@ public:
 private:
     juce::ADSR adsr;
     juce::ADSR::Parameters adsrParams;
+
+    juce::AudioBuffer<float> synthBuffer;
+
     juce::dsp::Oscillator<float> osc { [] (const float x) { return std::sin (x); } };
     juce::dsp::Gain<float> gain;
 
