@@ -12,7 +12,7 @@ PluginProcessor::PluginProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), apvts (*this, nullptr, "Parameters", createParameters())
 {
     synth.addSound (new SynthSound());
     synth.addVoice (new SynthVoice());
@@ -177,6 +177,24 @@ void PluginProcessor::setStateInformation (const void* data, int sizeInBytes)
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
     juce::ignoreUnused (data, sizeInBytes);
+}
+juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    // Comnbobox: switch oscillator type
+    params.push_back (std::make_unique<juce::AudioParameterChoice> ("OSC", "Oscillator Type", juce::StringArray { "Sine", "Saw", "Square" }, 0));
+    // Attack
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("ATTACK", "Attack", 0.1f, 1.0f, 0.1f));
+    // Decay
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("DECAY", "Decay", 0.1f, 1.0f, 0.1f));
+    // Sustain
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
+    // Release
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("RELEASE", "Release", 0.1f, 5000.0f, 0.1f));
+    // Gain
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("GAIN", "Gain", 0.0f, 3.0f, 0.4f));
+    return { params.begin(), params.end() };
 }
 
 //==============================================================================

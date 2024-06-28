@@ -6,6 +6,12 @@ PluginEditor::PluginEditor (PluginProcessor& p)
     juce::ignoreUnused (processorRef);
 
     addAndMakeVisible (inspectButton);
+    attackAttachment = std::make_unique<SliderAttachment> (processorRef.apvts, "ATTACK", attackSlider);
+    decayAttachment = std::make_unique<SliderAttachment> (processorRef.apvts, "DECAY", decaySlider);
+    sustainAttachment = std::make_unique<SliderAttachment> (processorRef.apvts, "SUSTAIN", sustainSlider);
+    releaseAttachment = std::make_unique<SliderAttachment> (processorRef.apvts, "RELEASE", releaseSlider);
+    gainAttachment = std::make_unique<SliderAttachment> (processorRef.apvts, "GAIN", gainSlider);
+    oscAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (processorRef.apvts, "OSC", oscSelector);
 
     // this chunk of code instantiates and opens the melatonin inspector
     inspectButton.onClick = [&] {
