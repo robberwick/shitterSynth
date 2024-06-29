@@ -6,6 +6,7 @@
 #define SYNTH_VOICE_H
 
 #include "SynthSound.h"
+#include "data/AdsrData.h"
 #include "juce_audio_basics/juce_audio_basics.h"
 #include "juce_dsp/juce_dsp.h"
 
@@ -21,8 +22,7 @@ public:
     void renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
 private:
-    juce::ADSR adsr;
-    juce::ADSR::Parameters adsrParams;
+    AdsrData adsr;
 
     juce::AudioBuffer<float> synthBuffer;
 
