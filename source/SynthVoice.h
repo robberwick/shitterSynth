@@ -17,6 +17,7 @@ public:
     void pitchWheelMoved (int newPitchWheelValue) override;
     void controllerMoved (int controllerNumber, int newControllerValue) override;
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
+    void updateADSR (float attack, float decay, float sustain, float release);
     void renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
 private:
@@ -25,11 +26,14 @@ private:
 
     juce::AudioBuffer<float> synthBuffer;
 
-    juce::dsp::Oscillator<float> osc { [] (const float x) { return std::sin (x); } };
+    juce::dsp::Oscillator<float> osc { [] (const float x) { return x / juce::MathConstants<float>::pi; } };
     juce::dsp::Gain<float> gain;
 
     bool isPrepared { false };
 
+    // return std::sin (x); // sine wave
+    // return x / MathConstants<float>::pi; // saw wave
+    // return x < 0.0f ? -1.0f : 1.0f; // square wave
 };
 
 
