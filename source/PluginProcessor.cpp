@@ -142,18 +142,15 @@ void PluginProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         buffer.clear (i, 0, buffer.getNumSamples());
 
     for (int i = 0; i < synth.getNumVoices(); i++) {
-        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
-            // OSC Controls
+        if (const auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
             // ADSR Controls
+            voice->updateADSR (
+                apvts.getRawParameterValue ("ATTACK")->load(),
+                apvts.getRawParameterValue ("DECAY")->load(),
+                apvts.getRawParameterValue ("SUSTAIN")->load(),
+                apvts.getRawParameterValue ("RELEASE")->load());
+            // OSC Controls
             // LFO Controls
-        }
-    }
-
-    for (const juce::MidiMessageMetadata metadata : midiMessages)
-    {
-        if (metadata.numBytes == 3)
-        {
-            juce::Logger::writeToLog ("Timestamp: " + juce::String (metadata.getMessage().getTimeStamp()));
         }
     }
 

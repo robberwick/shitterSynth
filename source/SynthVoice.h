@@ -17,6 +17,7 @@ public:
     void pitchWheelMoved (int newPitchWheelValue) override;
     void controllerMoved (int controllerNumber, int newControllerValue) override;
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
+    void updateADSR (float attack, float decay, float sustain, float release);
     void renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
 private:
