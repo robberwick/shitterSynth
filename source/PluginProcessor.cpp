@@ -196,9 +196,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     // Sustain
     params.push_back (std::make_unique<juce::AudioParameterFloat> ("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
     // Release
-    params.push_back (std::make_unique<juce::AudioParameterFloat> ("RELEASE", "Release", 0.1f, 5000.0f, 0.1f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("RELEASE", "Release", 0.1f, 3.0f, 0.1f));
     // Gain
-    params.push_back (std::make_unique<juce::AudioParameterFloat> ("GAIN", "Gain", 0.0f, 3.0f, 0.4f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("GAIN", "Gain", 0.0f, 1.0f, 0.3f));
     return { params.begin(), params.end() };
 }
 

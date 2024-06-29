@@ -24,6 +24,11 @@ PluginEditor::PluginEditor (PluginProcessor& p)
         inspector->setVisible (true);
     };
 
+    setSliderParams (attackSlider);
+    setSliderParams (decaySlider);
+    setSliderParams (sustainSlider);
+    setSliderParams (releaseSlider);
+
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
@@ -41,14 +46,34 @@ void PluginEditor::paint (juce::Graphics& g)
     auto area = getLocalBounds();
     g.setColour (juce::Colours::white);
     g.setFont (16.0f);
-    auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
-    g.drawText (helloWorld, area.removeFromTop (150), juce::Justification::centred, false);
+    // auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
+    // g.drawText (helloWorld, area.removeFromTop (150), juce::Justification::centred, false);
 }
 
 void PluginEditor::resized()
 {
     // layout the positions of your child components here
-    auto area = getLocalBounds();
-    area.removeFromBottom(50);
-    inspectButton.setBounds (getLocalBounds().withSizeKeepingCentre(100, 50));
+    auto area = getLocalBounds().reduced (10);
+    area.removeFromBottom (50);
+    inspectButton.setBounds (getLocalBounds().withSizeKeepingCentre (100, 50));
+
+    constexpr auto padding = 10;
+    const auto sliderWidth = area.getWidth() / 5 - (2 * padding);
+    const auto sliderHeight = area.getHeight() - (2 * padding);
+    constexpr auto sliderStartX = padding;
+    const auto sliderStartY = area.getHeight() / 2 - (sliderHeight / 2);
+
+    attackSlider.setBounds (sliderStartX, sliderStartY, sliderWidth, sliderHeight);
+    decaySlider.setBounds (attackSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+    sustainSlider.setBounds (decaySlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+    releaseSlider.setBounds (sustainSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+
+    gainSlider.setBounds (releaseSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+
+}
+void PluginEditor::setSliderParams (juce::Slider& slider)
+{
+    slider.setSliderStyle (juce::Slider::LinearVertical);
+    slider.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 50, 25);
+    addAndMakeVisible (slider);
 }
